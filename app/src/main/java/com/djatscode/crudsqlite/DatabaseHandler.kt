@@ -72,6 +72,22 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         db.close()
     }
 
+    fun updateUser(user: User): Int {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(KEY_NAME, user.name)
+        values.put(KEY_PHONE_NUM, user.phoneNum)
+        values.put(KEY_EMAIL, user.email)
+
+        // updating data
+        return db.update(
+            TABLE_USER,
+            values,
+            "$KEY_ID = ?",
+            arrayOf(user.id.toString())
+        )
+    }
+
 }
 
 
