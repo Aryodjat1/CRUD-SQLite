@@ -2,6 +2,7 @@ package com.djatscode.crudsqlite
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -43,6 +44,26 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         values.put(KEY_EMAIL, userModels.email)
         db.insert(TABLE_USER, null, values)
         db.close()
+    }
+
+    fun getAllUser(): List<User?> {
+        val users: MutableList<User> = ArrayList<User>()
+        // select All Query
+        val selectQuery = "SELECT * FROM $TABLE_USER"
+        val db = this.writableDatabase
+        val cursor: Cursor = db.rawQuery(selectQuery, null)
+        if (cursor.moveToFirst()){
+            do {
+                val userModels = User(
+                    id = cursor.getString(0).toInt(),
+                    name = cursor.getString(1),
+                    phoneNum = cursor.getString(2),
+                    email = cursor.getString(3)
+                )
+                users.add(userModels)
+            } while (cursor.moveToNext())
+        }
+        return users
     }
 
 }
