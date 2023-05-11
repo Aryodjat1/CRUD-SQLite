@@ -1,5 +1,6 @@
 package com.djatscode.crudsqlite
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -34,4 +35,16 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         onCreate(db)
     }
 
+    fun insertUser(userModels: User) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(KEY_NAME, userModels.name)
+        values.put(KEY_PHONE_NUM, userModels.phoneNum)
+        values.put(KEY_EMAIL, userModels.email)
+        db.insert(TABLE_USER, null, values)
+        db.close()
+    }
+
 }
+
+
